@@ -1,0 +1,44 @@
+{
+  "name": "@magnit-ce/message-card",
+  "version": "0.0.1",
+  "description": "A custom html element that provides a layout and display functionality for a notification-like message.",
+  "type": "module",
+  "main": "dist/message-card.js",
+  "module": "dist/message-card.mjs",
+  "types": "dist/message-card.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup message-card.ts --format cjs,esm --dts --clean",
+    "build-vanilla": "tsup message-card.ts --format esm --dts --clean --outDir ./vanilla",
+    "minify": "tsup message-card.ts --format esm --config ./tsup.config.min.ts --outDir ./vanilla --minify",
+    "lint": "tsup message-card.ts --format esm --tsconfig ./tsconfig.lint.json",
+    "package": "npm run build && npm run build-vanilla && npm run minify",
+    "release": "npm run package && changeset publish"
+  },
+  "keywords": [
+    "custom",
+    "element",
+    "html",
+    "message",
+    "notify",
+    "notification",
+    "ux",
+    "visual",
+    "animated"
+  ],
+  "author": "catapart",
+  "license": "CC0-1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/catapart/magnitce-message-card"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.7",
+    "minify": "^11.4.0",
+    "terser": "^5.31.3",
+    "tsup": "^8.2.0",
+    "typescript": "^5.5.3"
+  }
+}

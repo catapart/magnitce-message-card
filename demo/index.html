@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Card Demo</title>
+    <link rel="stylesheet" href="./demo-page.css">
+    <style>
+        article.basic .example { display: grid; gap: 1em; position: relative; }
+        /* article .example .dock
+        {
+            
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            padding: 1em;
+            width: 350px;
+            display: flex;
+            flex-direction: column;
+            gap: .5em;
+            overflow-y: auto;
+        } */
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Overview</h1>
+        <div class="overview">
+            <p>The <code>&lt;message-card&gt;</code> element provides functions and formatting for messages to be displayed in the DOM. It can function as embedded messaging, that is always displayed, or dynamic, notification-like messaging that is added and removed from the DOM.</p>
+            <p>Along with those use cases, the <code>&lt;message-card&gt;</code> element is designed to be "opened" and "closed", similar to a <code>&lt;dialog&gt;</code> element, so that a static message may be hidden and re-used. This allows common use-cases like error messages to be statically defined in the HTML, while also providing the ability to include messages with dynamic, contextual content at runtime.</p>
+        </div>
+        <h1>Examples</h1>
+        <article class="basic">
+            <!-- <style>
+                article.basic .example { display: grid; gap: 1em; }
+            </style> -->
+            <header>Basic Examples</header>
+            <p>The <code>&lt;message-card&gt;</code> element includes a variety of customization. In the simplest example, an empty message card, with a header of "Message" can be displayed by adding a <code>&lt;message-card&gt;</code> element with an <code>open</code> attribute.</p>
+            <p>From there, any child content of the <code>&lt;message-card&gt;</code> element, that is not assigned a <code>slot</code> property, will be added as the card's message content.</p>
+            <p>For convenience, if the card's content is only text, that can also be added to the <code>&lt;message-card&gt;</code> element by setting its <code>value</code> attribute's value to the message.</p>
+            <p>Similar to the value, the <code>&lt;message-card&gt;</code> element's header can be set either in the child content &mdash; by using the <code>heading</code> slot &mdash; or by setting the text of the <code>heading</code> attribute.</p>
+            <p>The <code>&lt;message-card&gt;</code> element can be "closed" by clicking the close button. Closing the element removes the <code>open</code> attribute, which sets the display to <code>none</code> by default.</p>
+            <p>While themeing this element is entirely customizeable by using css properties (variables), it provides default themes to easily distinguish between common message types. By setting the <code>&lt;message-card&gt;</code> element's <code>type</code> attribute to one of the pre-defined types, the element will take on a simple style to indicate that intention.</p>
+            <p>The examples below demonstrate the customization options, as well as each of the supported message card types.</p>
+            <div class="example">
+                <message-card open></message-card>
+                <message-card open  value="Simple messages can be defined in an attribute"></message-card>
+                <message-card open>
+                    <button type="button">Complex messages can be added as children.</button>
+                </message-card>
+                <message-card open value="Icons can be replaced with slots, too!">
+                    <header slot="heading">Customize the heading with slot the <code>"heading"</code> slot</header>
+                    <svg slot="message-icon" class="testing icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M16.142 2l5.858 5.858v8.284l-5.858 5.858h-8.284l-5.858-5.858v-8.284l5.858-5.858h8.284zm.829-2h-9.942l-7.029 7.029v9.941l7.029 7.03h9.941l7.03-7.029v-9.942l-7.029-7.029zm-5.971 6h2v8h-2v-8zm1 12.25c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25z"></path>
+                    </svg>
+                    <svg slot="close-icon" class="testing icon" width="14" height="14" viewBox="0 0 22.812714 22.814663" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+                        <path
+                        style="fill:var(--primary-color,InfoText);stroke:var(--outline-color,transparent);stroke-linecap:square;stroke-miterlimit:6.3;stroke-dashoffset:29.2913;stroke-opacity:1;-inkscape-stroke:none"
+                        d="m 1237.4389,207.63366 -1.8991,1.8987 a 0.65841136,0.65841136 90.003442 0 0 0,0.93116 l 0.4831,0.48317 a 14628.329,14628.329 44.999244 0 0 0.9312,0.93118 l 3.7936,3.79311 a 0.65840885,0.65840885 89.998393 0 1 0,0.93116 l -3.7936,3.7936 a 8783.6896,8783.6896 135.00442 0 1 -0.9313,0.93111 l -0.4829,0.48283 a 0.65811,0.65811 89.993977 0 0 10e-5,0.93094 l 1.8987,1.89741 a 0.65867085,0.65867085 179.98891 0 0 0.9314,-1.8e-4 l 0.4826,-0.48267 a 45427.77,45427.77 134.99941 0 1 0.9312,-0.93119 l 3.7931,-3.79308 a 0.65848899,0.65848899 179.99848 0 1 0.9312,-2e-5 l 3.7936,3.79312 a 10110.91,10110.91 44.992994 0 0 0.9313,0.93108 l 0.483,0.48285 a 0.65856615,0.65856615 179.99438 0 0 0.9313,-9e-5 l 1.897,-1.89705 a 0.65833101,0.65833101 89.994378 0 0 -10e-5,-0.93111 l -0.483,-0.48285 a 5293.5057,5293.5057 44.99639 0 1 -0.9313,-0.93113 l -3.793,-3.79354 a 0.65849247,0.65849247 90.001607 0 1 0,-0.93122 l 3.793,-3.79305 a 149190.44,149190.44 134.99995 0 1 0.9312,-0.93119 l 0.4832,-0.48321 a 0.65863247,0.65863247 90.008202 0 0 10e-5,-0.93132 l -1.8972,-1.89834 a 0.65838576,0.65838576 0.01346964 0 0 -0.9312,-2.2e-4 l -0.483,0.48285 a 7148.543,7148.543 135.00546 0 0 -0.9313,0.9311 l -3.7936,3.79359 a 0.65841791,0.65841791 0.00151591 0 1 -0.9312,-3e-5 l -3.7931,-3.79353 a 52707.551,52707.551 45.002134 0 0 -0.9312,-0.93122 l -0.4826,-0.48267 a 0.65849044,0.65849044 0.00323988 0 0 -0.9312,-5e-5 z"
+                        transform="translate(-1232.6358,-204.72848)" />
+                    </svg>
+                </message-card>
+                <style>
+                    article.basic .custom
+                    {
+                        --primary-color: teal;
+                        --background-color: rgb(153, 241, 241);
+                        --font-color: rgb(39, 78, 78);
+                    }
+                </style>
+                <message-card class="custom" open value="Set custom colors by overriding css using part selectors or setting the --primary-color, --background-color, and --font-color properties" heading="Note"></message-card>
+                
+                <message-card open type="info" value="Info" heading="Info"></message-card>
+                <message-card open type="success" value="Success" heading="Success"></message-card>
+                <message-card open type="warning" value="Warning" heading="Warning"></message-card>
+                <message-card open type="error" value="Error" heading="Error"></message-card>
+                <message-card open type="note" value="Note" heading="Note"></message-card>
+                <message-card open type="aside" value="Aside" heading="Aside"></message-card>
+                <message-card open type="report" value="Report" heading="Report"></message-card>
+            </div>
+        </article>
+        <article class="dynamic">
+            <style>
+                article.dynamic
+                {
+                    position: relative;
+                }
+            </style>
+            <header>Dynamic Message Cards</header>
+            <p>The <code>&lt;message-card&gt;</code> element provides the <code>notify()</code> and <code>prepare()</code> functions for dynamically managing messages. These functions automatically handle establishing a timeout for the message, showing progress for that timeout, and removing the element from the DOM when the timeout has completed.</p>
+            <p>Timeouts are managed by the <code>&lt;message-card&gt;</code> element's <code>duration</code> attribute. Any value above zero will be used as the milliseconds for the notification to be displayed before being removed. This may be done directly in the HTML, but the <code>prepare()</code> and <code>notify()</code> functions manage those timeouts, directly.</p>
+            <p>Timeout progress is tracked by the progress bar along the bottom of th <code>&lt;message-card&gt;</code> element. When the element has focus, or is being hovered over, the progress will be paused.</p>
+            <p>The <code>prepare()</code> function is used to add a <code>&lt;message-card&gt;</code> element to a parent element. It requires a message parameter and the parent element that it will append the message to as a parameter. It can also accept an options parameter for defining things like the <code>&lt;message-card&gt;</code> element's duration, heading, and type.</p>
+            <p>The <code>notify()</code> function provides a convenient way to prepare a <code>&lt;message-card&gt;</code> element and open it at the same time.</p>
+            <p>To make it easier to use customized <code>&lt;message-card&gt;</code> elements, the <code>notify()</code> and <code>prepare()</code> functions can accept a <code>&lt;message-card&gt;</code> element as their first parameter, rather than a message <code>string</code>. The same events and functionality will apply to the provided <code>&lt;message-card&gt;</code> element. The only difference will be that the custom-defined <code>&lt;message-card&gt;</code> element will be used, rather than simply injecting a message into the default <code>&lt;message-card&gt;</code> element structure.</p>
+            <p>In this example, each button will add a new <code>&lt;message-card&gt;</code> element to the DOM.</p>
+            <div class="example">
+                <div class="dock"></div>
+                <header></header>
+                <ul>
+                    <li><button class="default">Default</button></li>
+                    <li><button class="info">Info</button></li>
+                    <li><button class="success">Success</button></li>
+                    <li><button class="warning">Warning</button></li>
+                    <li><button class="error">Error</button></li>
+                    <li><button class="note">Note</button></li>
+                    <li><button class="aside">Aside</button></li>
+                    <li><button class="report">Report</button></li>
+                    <li>
+                        <div class="custom-settings">
+                            <header>Custom</header>
+                            <ul>
+                                <li>
+                                    <label class="field primary">
+                                        <span class="title">Primary Color</span>
+                                        <span class="content"><input type="color" value="#EA53C9"></span>
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="field background">
+                                        <span class="title">Background Color</span>
+                                        <span class="content"><input type="color" value="#F9D7F0"></span>
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="field font">
+                                        <span class="title">Font Color</span>
+                                        <span class="content"><input type="color" value="#602E2E"></span>
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="field duration">
+                                        <span class="title">Duration</span>
+                                        <span class="content"><input type="text" inputmode="numeric" value="5000"></span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                        <button class="custom">Custom</button>
+                    </li>
+                </ul>
+            </div>
+            <script type="module">
+                import { MessageCardElement } from '../vanilla/message-card.js';
+                const dynamicExample = document.querySelector('article.dynamic');
+                const dynamicLog = document.querySelector('article.dynamic .log ul');
+                document.addEventListener('DOMContentLoaded', () =>
+                {
+                    const dock = dynamicExample.querySelector('.dock');
+                    const ul = dynamicExample.querySelector('ul');
+                    ul.addEventListener('click', (event) =>
+                    {
+                        if(!(event.target instanceof HTMLButtonElement)
+                        || event.target.closest('button') == null)
+                        {
+                            return;
+                        }
+
+                        if(event.target.classList.contains('default'))
+                        {
+                            MessageCardElement.notify('Default', dock)
+                        }
+                        else if(event.target.classList.contains('info'))
+                        {
+                            MessageCardElement.notify('Message', dock, { heading: "Info", type: 'info' })
+                        }
+                        else if(event.target.classList.contains('success'))
+                        {
+                            MessageCardElement.notify('Message', dock, { heading: "Success", type: 'success' })
+                        }
+                        else if(event.target.classList.contains('warning'))
+                        {
+                            MessageCardElement.notify('Warning', dock, { heading: "Warning", type: 'warning' })
+                        }
+                        else if(event.target.classList.contains('error'))
+                        {
+                            MessageCardElement.notify('Error', dock, { heading: "Error", type: 'error' })
+                        }
+                        else if(event.target.classList.contains('note'))
+                        {
+                            MessageCardElement.notify('Note', dock, { heading: "Note", type: 'note' })
+                        }
+                        else if(event.target.classList.contains('aside'))
+                        {
+                            MessageCardElement.notify('Aside', dock, { heading: "Aside", type: 'aside' })
+                        }
+                        else if(event.target.classList.contains('report'))
+                        {
+                            MessageCardElement.notify('Report', dock, { heading: "Report", type: 'report' })
+                        }
+                        else if(event.target.classList.contains('custom'))
+                        {
+                            const duration = parseInt(dynamicExample.querySelector('.field.duration input').value);
+                            const card = MessageCardElement.notify('Custom', dock, { heading: "Custom", duration });
+                            card.style.setProperty('--primary-color', dynamicExample.querySelector('.field.primary input').value);
+                            card.style.setProperty('--background-color', dynamicExample.querySelector('.field.background input').value);
+                            card.style.setProperty('--font-color', dynamicExample.querySelector('.field.font input').value);
+                        }
+                    });
+                });              
+            </script>
+        </article>
+        <article class="events">
+            <header>Events</header>
+            <p>The <code>&lt;message-card&gt;</code> element dispatches events to indicate automatic manipulation and manual interaction. The <code>open</code> and <code>close</code> events are dispatched whenever the <code>open</code> attribute is toggled. When a <code>&lt;message-card&gt;</code> element is removed from the DOM, the <code>remove</code> event is dispatched. The <code>cancel</code> event indicates that the close button was selected by a user, and the <code>progresscomplete</code> event is dispatched after a <code>&lt;message-card&gt;</code> element's duration has elapsed and the progress value reaches zero.</p>
+            <p>In this example, there is a single static message that can be opened or closed with the buttons, and another button that will add <code>&lt;message-card&gt;</code> elements to the DOM, dynamically. Each of the <code>&lt;message-card&gt;</code> element's events are logged below.</p>
+            <div class="example">
+                <div class="dock">
+                    <message-card class="static">
+                        This card is static and will not be removed automatically from the DOM. Clicking the "X" will "close" the element, which will set its display to none, by default. But the element will still be present in the DOM and can be displayed, again, by adding an "open" attribute.
+                    </message-card>
+                </div>
+                <header></header>
+                <ul>
+                    <li><button class="open static">Open Static Card</button></li>
+                    <li><button class="close static">Close Static Card</button></li>
+                    <li><button class="add notification">Add Notification</button></li>
+                </ul>
+            </div>
+            <div class="log">
+                <header>
+                    <span class="title">Log</span>
+                </header>
+                <ul></ul>
+            </div>
+            <script type="module">
+                import { MessageCardElement } from '../vanilla/message-card.js';
+                const eventsExample = document.querySelector('article.events');
+                const eventsLog = document.querySelector('article.events .log ul');
+                document.addEventListener('DOMContentLoaded', () =>
+                {
+                    const dock = eventsExample.querySelector('.dock');
+                    const ul = eventsExample.querySelector('ul');
+                    ul.addEventListener('click', (event) =>
+                    {
+                        if(!(event.target instanceof HTMLButtonElement)
+                        || event.target.closest('button') == null)
+                        {
+                            return;
+                        }
+
+                        if(event.target.classList.contains('static'))
+                        {
+                            const card = eventsExample.querySelector('message-card.static');
+                            if(event.target.classList.contains('open'))
+                            {
+                                card.toggleAttribute('open', true);
+                            }
+                            else
+                            {
+                                card.toggleAttribute('open', false);
+                            }
+                        }
+                        else if(event.target.classList.contains('notification'))
+                        {
+                            const card = MessageCardElement.prepare('This card was added with the static "notify" function, and will remove itself when the progress bar completes.', dock, { type: 'info' });
+                            card.dataset.timestamp = Date.now();
+                            card.show();                            
+                        }
+                    });
+
+                    dock.addEventListener('cancel', (event) =>
+                    {
+                        if(event.target.classList.contains('static'))
+                        {
+                            logResult({ type: 'cancel', card: 'static' });
+                            return;
+                        }
+                        const targetDate = new Date(parseInt(event.target.dataset.timestamp));
+                        logResult({ type: 'cancel', card: 'dynamic', timestamp: `${targetDate.getHours()}:${targetDate.getMinutes()}:${targetDate.getSeconds()}` });
+                    });
+                    dock.addEventListener('open', (event) =>
+                    {
+                        if(event.target.classList.contains('static'))
+                        {
+                            logResult({ type: 'open', card: 'static' });
+                            return;
+                        }
+                        const targetDate = new Date(parseInt(event.target.dataset.timestamp));
+                        logResult({ type: 'open', card: 'dynamic', timestamp: `${targetDate.getHours()}:${targetDate.getMinutes()}:${targetDate.getSeconds()}` });
+                    });
+                    dock.addEventListener('close', (event) =>
+                    {
+                        if(event.target.classList.contains('static'))
+                        {
+                            logResult({ type: 'close', card: 'static' });
+                            return;
+                        }
+                        const targetDate = new Date(parseInt(event.target.dataset.timestamp));
+                        logResult({ type: 'close', card: 'dynamic', timestamp: `${targetDate.getHours()}:${targetDate.getMinutes()}:${targetDate.getSeconds()}` });
+                    });
+                    dock.addEventListener('remove', (event) =>
+                    {
+                        if(event.target.classList.contains('static'))
+                        {
+                            logResult({ type: 'remove', card: 'static' });
+                            return;
+                        }
+                        const targetDate = new Date(parseInt(event.target.dataset.timestamp));
+                        logResult({ type: 'remove', card: 'dynamic', timestamp: `${targetDate.getHours()}:${targetDate.getMinutes()}:${targetDate.getSeconds()}` });
+                    });
+                    dock.addEventListener('progresscomplete', (event) =>
+                    {
+                        if(event.target.classList.contains('static'))
+                        {
+                            logResult({ type: 'progresscomplete', card: 'static' });
+                            return;
+                        }
+                        const targetDate = new Date(parseInt(event.target.dataset.timestamp));
+                        logResult({ type: 'progresscomplete', card: 'dynamic', timestamp: `${targetDate.getHours()}:${targetDate.getMinutes()}:${targetDate.getSeconds()}` });
+                    });
+                });  
+                function logResult(result)
+                {
+                    const entryElement = document.createElement('li');
+                    const codeElement = document.createElement('code');
+                    const preElement = document.createElement('pre');
+                    preElement.textContent = JSON.stringify(result, null, 2);
+                    codeElement.append(preElement);
+                    entryElement.append(codeElement);
+                    eventsLog.append(entryElement);
+                }                
+            </script>
+        </article>
+    </main>
+    <script type="module" src="../vanilla/message-card.js"></script>
+</body>
+</html>
