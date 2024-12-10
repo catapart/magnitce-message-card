@@ -1,6 +1,6 @@
 {
   "name": "@magnit-ce/message-card",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A custom html element that provides a layout and display functionality for a notification-like message.",
   "type": "module",
   "main": "dist/message-card.js",
