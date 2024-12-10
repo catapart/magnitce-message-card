@@ -20,9 +20,9 @@
 
 :host
 {
-    --primary-color: canvastext;
-    --font-color: canvastext;
-    background-color: var(--background-color);
+    --primary-color: graytext;
+    --font-color: fieldtext;
+    background-color: var(--background-color, field);
     color: var(--font-color);
     border: solid 1px var(--primary-color);
     border-radius: 3px;

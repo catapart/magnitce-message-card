@@ -24,25 +24,31 @@
     </style>
 </head>
 <body>
-    <main>
-        <h1>Overview</h1>
-        <div class="overview">
+    <main class="centered-single-column">
+        <header class="full-width">
+            <div class="content centered-single-column">
+            <h1>The <code>message-card</code> element</h1>
+            </div>
+        </header>
+        <article class="overview">
+            <h2>Overview</h2>
             <p>The <code>&lt;message-card&gt;</code> element provides functions and formatting for messages to be displayed in the DOM. It can function as embedded messaging, that is always displayed, or dynamic, notification-like messaging that is added and removed from the DOM.</p>
             <p>Along with those use cases, the <code>&lt;message-card&gt;</code> element is designed to be "opened" and "closed", similar to a <code>&lt;dialog&gt;</code> element, so that a static message may be hidden and re-used. This allows common use-cases like error messages to be statically defined in the HTML, while also providing the ability to include messages with dynamic, contextual content at runtime.</p>
-        </div>
-        <h1>Examples</h1>
+        </article>
         <article class="basic">
             <!-- <style>
                 article.basic .example { display: grid; gap: 1em; }
             </style> -->
-            <header>Basic Examples</header>
-            <p>The <code>&lt;message-card&gt;</code> element includes a variety of customization. In the simplest example, an empty message card, with a header of "Message" can be displayed by adding a <code>&lt;message-card&gt;</code> element with an <code>open</code> attribute.</p>
-            <p>From there, any child content of the <code>&lt;message-card&gt;</code> element, that is not assigned a <code>slot</code> property, will be added as the card's message content.</p>
-            <p>For convenience, if the card's content is only text, that can also be added to the <code>&lt;message-card&gt;</code> element by setting its <code>value</code> attribute's value to the message.</p>
-            <p>Similar to the value, the <code>&lt;message-card&gt;</code> element's header can be set either in the child content &mdash; by using the <code>heading</code> slot &mdash; or by setting the text of the <code>heading</code> attribute.</p>
-            <p>The <code>&lt;message-card&gt;</code> element can be "closed" by clicking the close button. Closing the element removes the <code>open</code> attribute, which sets the display to <code>none</code> by default.</p>
-            <p>While themeing this element is entirely customizeable by using css properties (variables), it provides default themes to easily distinguish between common message types. By setting the <code>&lt;message-card&gt;</code> element's <code>type</code> attribute to one of the pre-defined types, the element will take on a simple style to indicate that intention.</p>
-            <p>The examples below demonstrate the customization options, as well as each of the supported message card types.</p>
+            <h2>Basic Examples</h2>
+            <div class="description">
+                <p>The <code>&lt;message-card&gt;</code> element includes a variety of customization. In the simplest example, an empty message card, with a header of "Message" can be displayed by adding a <code>&lt;message-card&gt;</code> element with an <code>open</code> attribute.</p>
+                <p>From there, any child content of the <code>&lt;message-card&gt;</code> element, that is not assigned a <code>slot</code> property, will be added as the card's message content.</p>
+                <p>For convenience, if the card's content is only text, that can also be added to the <code>&lt;message-card&gt;</code> element by setting its <code>value</code> attribute's value to the message.</p>
+                <p>Similar to the value, the <code>&lt;message-card&gt;</code> element's header can be set either in the child content &mdash; by using the <code>heading</code> slot &mdash; or by setting the text of the <code>heading</code> attribute.</p>
+                <p>The <code>&lt;message-card&gt;</code> element can be "closed" by clicking the close button. Closing the element removes the <code>open</code> attribute, which sets the display to <code>none</code> by default.</p>
+                <p>While themeing this element is entirely customizeable by using css properties (variables), it provides default themes to easily distinguish between common message types. By setting the <code>&lt;message-card&gt;</code> element's <code>type</code> attribute to one of the pre-defined types, the element will take on a simple style to indicate that intention.</p>
+                <p>The examples below demonstrate the customization options, as well as each of the supported message card types.</p>
+            </div>
             <div class="example">
                 <message-card open></message-card>
                 <message-card open  value="Simple messages can be defined in an attribute"></message-card>
@@ -87,14 +93,16 @@
                     position: relative;
                 }
             </style>
-            <header>Dynamic Message Cards</header>
-            <p>The <code>&lt;message-card&gt;</code> element provides the <code>notify()</code> and <code>prepare()</code> functions for dynamically managing messages. These functions automatically handle establishing a timeout for the message, showing progress for that timeout, and removing the element from the DOM when the timeout has completed.</p>
-            <p>Timeouts are managed by the <code>&lt;message-card&gt;</code> element's <code>duration</code> attribute. Any value above zero will be used as the milliseconds for the notification to be displayed before being removed. This may be done directly in the HTML, but the <code>prepare()</code> and <code>notify()</code> functions manage those timeouts, directly.</p>
-            <p>Timeout progress is tracked by the progress bar along the bottom of th <code>&lt;message-card&gt;</code> element. When the element has focus, or is being hovered over, the progress will be paused.</p>
-            <p>The <code>prepare()</code> function is used to add a <code>&lt;message-card&gt;</code> element to a parent element. It requires a message parameter and the parent element that it will append the message to as a parameter. It can also accept an options parameter for defining things like the <code>&lt;message-card&gt;</code> element's duration, heading, and type.</p>
-            <p>The <code>notify()</code> function provides a convenient way to prepare a <code>&lt;message-card&gt;</code> element and open it at the same time.</p>
-            <p>To make it easier to use customized <code>&lt;message-card&gt;</code> elements, the <code>notify()</code> and <code>prepare()</code> functions can accept a <code>&lt;message-card&gt;</code> element as their first parameter, rather than a message <code>string</code>. The same events and functionality will apply to the provided <code>&lt;message-card&gt;</code> element. The only difference will be that the custom-defined <code>&lt;message-card&gt;</code> element will be used, rather than simply injecting a message into the default <code>&lt;message-card&gt;</code> element structure.</p>
-            <p>In this example, each button will add a new <code>&lt;message-card&gt;</code> element to the DOM.</p>
+            <h2>Dynamic Message Cards</h2>
+            <div class="description">
+                <p>The <code>&lt;message-card&gt;</code> element provides the <code>notify()</code> and <code>prepare()</code> functions for dynamically managing messages. These functions automatically handle establishing a timeout for the message, showing progress for that timeout, and removing the element from the DOM when the timeout has completed.</p>
+                <p>Timeouts are managed by the <code>&lt;message-card&gt;</code> element's <code>duration</code> attribute. Any value above zero will be used as the milliseconds for the notification to be displayed before being removed. This may be done directly in the HTML, but the <code>prepare()</code> and <code>notify()</code> functions manage those timeouts, directly.</p>
+                <p>Timeout progress is tracked by the progress bar along the bottom of th <code>&lt;message-card&gt;</code> element. When the element has focus, or is being hovered over, the progress will be paused.</p>
+                <p>The <code>prepare()</code> function is used to add a <code>&lt;message-card&gt;</code> element to a parent element. It requires a message parameter and the parent element that it will append the message to as a parameter. It can also accept an options parameter for defining things like the <code>&lt;message-card&gt;</code> element's duration, heading, and type.</p>
+                <p>The <code>notify()</code> function provides a convenient way to prepare a <code>&lt;message-card&gt;</code> element and open it at the same time.</p>
+                <p>To make it easier to use customized <code>&lt;message-card&gt;</code> elements, the <code>notify()</code> and <code>prepare()</code> functions can accept a <code>&lt;message-card&gt;</code> element as their first parameter, rather than a message <code>string</code>. The same events and functionality will apply to the provided <code>&lt;message-card&gt;</code> element. The only difference will be that the custom-defined <code>&lt;message-card&gt;</code> element will be used, rather than simply injecting a message into the default <code>&lt;message-card&gt;</code> element structure.</p>
+                <p>In this example, each button will add a new <code>&lt;message-card&gt;</code> element to the DOM.</p>
+            </div>
             <div class="example">
                 <div class="dock"></div>
                 <header></header>
@@ -202,9 +210,11 @@
             </script>
         </article>
         <article class="events">
-            <header>Events</header>
-            <p>The <code>&lt;message-card&gt;</code> element dispatches events to indicate automatic manipulation and manual interaction. The <code>open</code> and <code>close</code> events are dispatched whenever the <code>open</code> attribute is toggled. When a <code>&lt;message-card&gt;</code> element is removed from the DOM, the <code>remove</code> event is dispatched. The <code>cancel</code> event indicates that the close button was selected by a user, and the <code>progresscomplete</code> event is dispatched after a <code>&lt;message-card&gt;</code> element's duration has elapsed and the progress value reaches zero.</p>
-            <p>In this example, there is a single static message that can be opened or closed with the buttons, and another button that will add <code>&lt;message-card&gt;</code> elements to the DOM, dynamically. Each of the <code>&lt;message-card&gt;</code> element's events are logged below.</p>
+            <h2>Events</h2>
+            <div class="description">
+                <p>The <code>&lt;message-card&gt;</code> element dispatches events to indicate automatic manipulation and manual interaction. The <code>open</code> and <code>close</code> events are dispatched whenever the <code>open</code> attribute is toggled. When a <code>&lt;message-card&gt;</code> element is removed from the DOM, the <code>remove</code> event is dispatched. The <code>cancel</code> event indicates that the close button was selected by a user, and the <code>progresscomplete</code> event is dispatched after a <code>&lt;message-card&gt;</code> element's duration has elapsed and the progress value reaches zero.</p>
+                <p>In this example, there is a single static message that can be opened or closed with the buttons, and another button that will add <code>&lt;message-card&gt;</code> elements to the DOM, dynamically. Each of the <code>&lt;message-card&gt;</code> element's events are logged below.</p>
+            </div>
             <div class="example">
                 <div class="dock">
                     <message-card class="static">
