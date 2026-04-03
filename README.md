@@ -1,261 +1,128 @@
-# `<message-card>` Element
-A custom `HTMLElement` that provides a layout and display functionality for a notification-like message.
+# Warning - Non-production package
+> [!WARNING]  
+> This project is being prepared for production, but is not ready to be used as a dependency for anything. There will be breaking changes and unrecoverable states. Do not use until this warning has been removed.
+> When the library reaches the `1.0.0` designation, that will be a production package. From that point, you can use the major version number (`1` in `1.0.0`) to recognize when breaking changes are introduced.
 
-Package size: ~11kb minified, ~17kb verbose.
-
-## Quick Reference
-```html
-<message-card></message-card>
-<message-card open type="info" value="Simple messages can be defined in an attribute" heading="Info"></message-card>
-<message-card open type="note" value="Set custom colors by overriding css using part selectors or setting the --primary-color, --background-color, and --font-color properties"></message-card>
-<message-card open type="aside" value="Replace icons by setting their parts">
-    <img src="custom-message-icon.png" part="message-icon">
-    <img src="my-custom-remove-icon.png" part="remove" />
-</message-card>
-<script type="module" src="/path/to/message-card[.min].js"></script>
-```
-
-## Demos
-https://catapart.github.io/magnitce-message-card/demo/
-
-## Support
-- Firefox
-- Chrome
-- Edge
-- <s>Safari</s> (Has not been tested; should be supported, based on custom element support)
-
-## Getting Started
- 1. [Install/Reference the library](#referenceinstall)
-
-### Reference/Install
-#### HTML Import (not required for vanilla js/ts; alternative to import statement)
-```html
-<script type="module" src="/path/to/message-card[.min].js"></script>
-```
-#### npm
-```cmd
-npm install @magnit-ce/message-card
-```
-
-### Import
-#### Vanilla js/ts
-```js
-import "/path/to/message-card[.min].js"; // if you didn't reference from a <script>, reference with an import like this
-
-import { MessageCardElement } from "/path/to/message-card[.min].js";
-```
-#### npm
-```js
-import "@magnit-ce/message-card"; // if you didn't reference from a <script>, reference with an import like this
-
-import { MessageCardElement } from "@magnit-ce/message-card";
-```
-
----
----
----
+# The `message-card` Custom Element
 
 ## Overview
-The `<message-card>` element packages a standardized message layout with common notification functionality to provide a simple and customizable method of adding messages to the DOM.
+A custom html element that provides a layout and display functionality for a notification-like message.
 
-For convenience, the element includes functionality for managing "static" elements, which are added to the page once and displayed many times, as well as "dynamic" element, which are added and removed from the DOM, more like a "notification".
-
-## Static Elements
-The `<message-card>` element can be used in a way similar to the `<dialog>` element, where it is defined in static HTML and then displayed using either its `open` attribute, or the `show()` and `close()` functions. This type of usage is useful for messages like errors and warnings, where the message will often be the same for many cases, and does not need to be dynamically generated based on context.
-
-## Cancellation
-The `<message-card>` element includes a "close" button that can be used to "dismiss" the message. When this button is selected, the `<message-card>` element will dispatch a `cancel` event, to indicate that it was a button click that is causing the effects.
-
-For static `<message-card>` elements, the only effect is that the `open` attribute will be removed, causing its display to be set to `none` by default.
-
-If the element was created with the `prepare()` or `notify()` functions - and is therefore being managed internallly - then the cancellation will also cause the element to be removed from the DOM.
-
-## `duration` and Progress
-The `<message-card>` element implements a timeout function that can be used to indicate that a message has been displayed for a set duration. The time, in milliseconds, for the duration of the timeout can be set by assigning a value to the `<message-card>` element `duration` attribute.
-
-If a `<message-card>` element has a `duration` value set, that `<message-card>` element will start a timeout when the `show()` function is called. The progress of that timeout will be represented in the `<message-card>` element as the value of the `duration` part, along the bottom of the element. The amount of time left in the timeout will be represented as a percentage value from `100%`, decremented down to `0%`.
-
-One the timeout completes, the `progresscomplete` event will be dispatched. If the element is being managed, due to having been a product of the `prepare()` or `notify()` functions, it will also dispatch `close` and `remove` events, during its deconstruction.
-
-### Suspension
-If a `<message-card>` element has a `duration` element and is progressing through a timout, it can be paused by calling the `pause()` function. Suspensions can last indefinitely.
-
-If a `<message-card>` element is being hovered over, by a pointer, or it becomes focused, that element's timeout will be paused until the `mouseexit` event or it loses focus, respectively.
-
-## Dynamic Elements
-The `<message-card>` element can be added to the DOM dynamically using any standard method for injecting DOM elements into the document, including `document.body.append(document.createElement('message-card'))`, for example.
-
-For conveneince, the element provides `static` functions that only require a message value and a parent element in order to display a message in the DOM.
-
-### `prepare()`
-The `prepare()` function creates a `<message-card>` element, establishes a duration, and indicates to the `progresscomplete` event handler that it should be removed. The function call returns a reference to the `<message-card>` element so that the implementer can call `show()` when it is appropriate.
-
-### `notify()`
-The `notify()` function generates a `<message-card>` element using the `prepare()` function, and the immediately calls `show()` on it. This has the effect of immediately adding the element to the DOM and displaying it, acting like a "notification" message.
-
-### Parameters
-|Parameter|Type|Description|
-|-|-|-|
-|[`message`|`target`]|[`message`|`<message-card>`]|The message to display in the `<message-card>` element. Alternatively, a `<message-card>` element to be managed by the event handlers (useful if using custom templates).|
-|`parent`|`HTMLElement`|The parent element that this `<message-card>` will be appended to.|
-|`options`|[`MessageCardProperties`](#messagecardproperties)|Set content and details on the `<message-card>`.|
-
-### Example
-*For the most dynamic examples, see the [demo](https://catapart.github.io/magnitce-message-card/demo/)*
-#### Prepare
-```js
-const dock = document.getElementById('dock');
-// prepare the message-card now...
-const card = MessageCardElement.prepare('This card was added with the static "prepare" function, and will remove itself when the progress bar completes.', dock, { type: 'info' });
-
-// ... display it when you want
-card.show(); 
-```
-#### Notify
-```js
-const dock = document.getElementById('dock');
-// this will immediately show the message-card. It still returns a reference, though.
-const card = MessageCardElement.notify('This card was added with the static "notify" function, and will also remove itself when the progress bar completes.', dock, { type: 'info' });
-```
-
-## `MessageCardProperties`
-When using the `prepare()` or `notify()` functions, options can be assigned to the `<message-card>` element by passing in a `MessageCardProperties` object instance as the options parameter. The following values can be set:
-|Property Name|Type|Description|
-|-|-|-|
-|`value`|`string`|The message to display in the `<message-card>` element.|
-|`type`|[`MessageCardType`](#types-and-customization)|The type to use as a theme for the `<message-card>` element.|
-|`heading`|`string`|The heading text for the `<message-card>` element.|
-|`duration`|`number`|The duration, in milliseconds, before the `<message-card>` element will dispatch the `progresscomplete` event.|
-|`preventClose`|`boolean`|If this is true, the `close()` function will be prevented and all functionality for closing the `<message-card>` element will be cancelled.|
-|`onClose`|`(event?: Event) => void\|Promise<void>`|A function to run every time a `close` event is dispatched.|
-|`onRemove`|`(event?: Event) => void\|Promise<void>`|A function to run every time a `remove` event is dispatched.|
-|`onProgressComplete`|`(event?: Event) => void\|Promise<void>`|A function to run every time a `progresscomplete` event is dispatched.|
-
-## Types and Customization
-The `type` attribute can be used to apply themes to the `<message-card>` element. Setting type to any of the type values listed below will apply that types color. For convenience, different colors have been selected for light and dark modes and will be automatically applied based on media queries. Both light and dark colors are listed here.
-|Type Value|Light Color|Dark Color|Expected Usage|
+|||||
 |-|-|-|-|
-|`info`|`#0184db`|`#3baee9`|Informational messages|
-|`success`|`#20a453`|`#4fc872`|Indicate user success|
-|`warning`|`#f0cb52`|`#f0cb52`|Warnings before user actions|
-|`error`|`#db283b`|`#e95a5c`|Alert that an error has occurred|
-|`aside`|`#1f3cd0`|`#3760ff`|Secondary messaging|
-|`note`|`#db8630`|`#e9ac60`|Reminders and descriptions|
-|`report`|`#4d5168`|`#707177`|Results and logging|
+|Package size, **verbose**:|~17kb|Package size, **minified**:|~11kb|
 
-## Attributes
-|Attribute Name|Description|
-|-|-|
-|`open`|When toggled on, or present, invokes the `show()` function. When toggled off, invokes the `close()` function.|
-|`value`|Set the message to display in the `<message-card>` element.|
-|`type`|Set a theme for the `<message-card>` element.|
-|`heading`|Set the heading of the `<message-card>` element.|
-|`duration`|Set the amount of time, in milliseconds, for the `<message-card>` element's timer to ellapse before the `progresscomplete` event is dispatched.|
-|`prevent-close`|Override the default behavior and prevent the close functionality from occurring.|
 
-## Properties
-In script, the `<message-card>` element exposes the following properties on the `MessageCard` object:
-|Property Name|Description|
-|-|-|
-|`value`|Set the message to display in the `<message-card>` element.|
-|`duration`|Set the amount of time, in milliseconds, for the `<message-card>` element's timer to ellapse before the `progresscomplete` event is dispatched.|
 
-## Parts
-The `<message-card>` element uses the `part` attribute to expose its shadow DOM content to the light DOM both for styling and selecting in javascript.
-|Name|Description|
-|-|-|
-|`message-icon`|The icon displayed in the `<message-card>` element, alongside the message.|
-|`header`|A title area, above the message in the `<message-card>` element.|
-|`heading`|The heading text displayed in the `header` part.|
-|`message`|The element where the `<message-card>` element's message is rendered.|
-|`close-button`|A button that cancels the `<message-card>` element.|
-|`close-icon`|An icon on the `close-button` part that indicates "close".|
-|`duration`|The `<progress>` element that indicates the `<message-card>` element's timeout progress.|
+## Quick Start
+```html
 
-### `findPart()` and `getPart()`
-In addition to being able to select an element from the `<message-card>` element's shadowRoot reference, this element provides a function for selecting one of its parts by using the `findPart()` function.
-
-In this example, the same part is selected with the default shadowRoot reference, and by using the `findPart()` function:
-```js
-const taskCard = document.querySelector('message-card');
-taskCard.findPart('close-button').addEventListener('click', (event) =>
-{
-    // queries the shadowRoot for an element with a part attribute of "close-button"
-});
-taskCard.shadowRoot.querySelector('[part="close-button"]').addEventListener('click', (event) =>
-{
-    // queries the shadowRoot for an element with a part attribute of "close-button"
-});
-```
-*(note: these two calls do exactly the same thing)*
-
-If one of this element's parts are going to be referenced frequently, the `<message-card>` element's `getPart()` function can be used instead.
-
-With `getPart()`, the element will be cached in RAM for immediate access witout having to perform a DOM query on the shadowRoot.
-```js
-const taskCard = document.querySelector('message-card');
-taskCard.getPart('close-button').addEventListener('click', (event) =>
-{
-    // gets cached element and, if null: queries the shadowRoot for an element with a part attribute of "close-button"
-});
-taskCard.shadowRoot.querySelector('[part="close-button"]').addEventListener('click', (event) =>
-{
-    // queries the shadowRoot for an element with a part attribute of "close-button"
-});
-```
-*(note: these two calls do two different things)*
-
-For event-based or initialization code, `findPart()` should be fine for performance. But if the `<message-card>` element is going to be updated multiple times in a row, the `getPart()` function will provide a smoother experience.
-
-## Slots
-The `<message-card>` element exposes the following `slot`s: 
-|Name|Description|Default Element|
-|-|-|-|
-|`message-icon`|`SVGElement`|An icon to help identify the content of the message.|
-|`heading`|`HTMLSpanElement`|A title for the message.|
-|[Default]|Slot that holds the message. (*note: this slot has no name; all children of the `<message-card>` element that do not have a `slot` attribute will be placed in this default slot.*)|[empty]|
-|`close-icon`|`SVGElement`|An icon to indicate "close".|
-
-## Additional Functions
-|Function|Description|
-|-|-|
-|`startTimeout()`|If the `duration` attribute is set to a value higher than zero, this function will begin progress on the `<message-card>` element's timeout.|
-|`pauseTimeout()`|If a timeout is currently running, this function will pause the timeout.|
-|`resumeTimeout()`|If a timeout is currently running and paused, this funtion will resume the timeout.|
-|`endTimeout()`|If a timeout is currently running, this function will end and deconstruct the timeout.|
-
-## Events
-The `<message-card>` element dispatches events to indicate when an automatic DOM manipulation has occurred, as well as when a user has indicated that they want to dismiss the `<message-card>` element.
-
-The following events are dispatched by the `<message-card>` element:
-|Event Name|Description
-|-|-|
-|`open`|Dispatched when the `<message-card>` element's `open` attribute is toggled on.|
-|`close`|Dispatched when the `<message-card>` element's `open` attribute is toggled off.|
-|`cancel`|Dispatched when the `<message-card>` element's "close" button is selected.|
-|`progresscomplete`|Dispatched when the `<message-card>` element's duration timeout has elapsed.|
-|`remove`|Dispatched when the `<message-card>` element is removed from the DOM.|
-
-## Styling
-Each of the elements in the `<message-card>` element's shadowRoot can be selected for styling, directly, by using the `::part()` selector.
-
-In this example, the `message` part is being selected for styling:
-```css
-task-card::part(message)
-{
-    /* styling */
-}
 ```
 
-For a list of all part names, see the [parts](#parts) section.
+## Links
+### Demo:
+https://catapart.github.io/magnitce-message-card
+### Documentation:
+https://catapart.github.io/magnitce-message-card/docs
+### Automated Testing:
+https://catapart.github.io/magnitce-message-card/tests.html
 
-### CSS Properties
-The `<message-card>` element also makes use of css properties (variables) to facilitate color customization. The following css properties can be used to style the icon elements:
-|CSS Property Name|Description
-|-|-|
-|`--primary-color`|The color that will be used for the border, the default icon's fill, the heading text, and the "close" button's icon.|
-|`--background-color`|The color of the card's background.|
-|`--background-color`|The color of the message font.|
+## Repo Notes
+This section provides instructions for how to use the repo to develop the library.
 
-## License
-This library is in the public domain. You do not need permission, nor do you need to provide attribution, in order to use, modify, reproduce, publish, or sell it or any works using it or derived from it.
+### Installation
+Install the repo using a package manager:
+```cmd
+npm install
+```
+
+### Configuration
+#### `tsconfig.json`
+The `tsconfig.json` file is generated by the `vite` dependency and has not been modified by this library. It uses strict linting and defaults to `es` modules, rather than `commonjs` modules. For more information about each of the `tsconfig.json` options, see the [tsconfig documentation](https://www.typescriptlang.org/tsconfig/).
+#### `vite.config`
+The `vite.config` file sets defaults options for the dev, build, and release processes, which allows the code to be packaged as a library (rather than a website) and defines custom inputs and outputs to exclude tests and create both `es` and `umd` modules. It also includes settings that allow for multiple file outputs with well-defined names and selective minification. For more information about configuring `vite`, see the [vite config documentation](https://vite.dev/config/).
+#### `vite.config.tests.ts`
+This specialized `vite.config` file defines custom inputs and outputs that include tests and then are packaged into the `test-runner` directory, rather than built to the `dist` directory.
+
+### Development
+The `src` directory has a `dev` subdirectory that is intended for development. Developers can link to code-test files written in typescript, which allows for full type support while writing tests during development.
+
+Place development tests in the `tests` subdirectory of the `dev` directory. Use the suffix `.tests` to denote that a typescript file is a code-tests file. (*example: `interface.tests.ts`*)
+
+Once tests have been added, the `build-tests` script can be used to compile the typescript tests into javascript tests that will be available for use in any `<code-tests>` or `<test-runner>` elements - including on the `tests.html` page.
+
+### Test Page
+The test page (`tests.html`) in the root directory can be used to demonstrate passing tests to users. 
+
+Tests can be created in the `src/dev/tests` directory and developed using the dev page. When all tests are passing, use the `build-tests` script to transpile the `.ts` test files into `.js` test files that are deployed to the `public/tests` directory, which can be referenced by the `tests.html` page.
+
+The test page will also expect a reference to the library file, which won't exist until the `build` script has been run. If running the project causes errors, check the test page to either remove the script tags requesting the library file, or build the library to provide the test page with its requested source file.
+
+### Scripts
+#### `dev`
+Use `vite` to begin a server with Hot Module Replacement, which will automatically reload any time a change in a source file is saved.
+#### `build`
+Use `vite` to transpile the source code into code chunks or library files. Files are output into the `dist` directory by default.
+#### `preview`
+Use `vite` to serve the `dist` directory. Useful for non-library projects, where the `dist` directory will contain an `index.html` file, or other browse-able entry point.
+#### `build-tests`
+Use `vite` to transpile all files with a `.tests.[ts|js|tsx|jsx]` extension into the `public/tests` subdirectory. Creates javascript files that can be served to the `<test-runner>` and `<code-tests>` components, which are included in the `public/libs` subdirectory.
+#### `changeset`
+Runs the `npx @changesets/cli` command to create a new changeset which will prepare the library to be published.
+#### `release`
+Use `vite` to transpile the source code and then use `changesets` to begin the publication procedure for the repo environment (github or gitlab).  
+If this script is run during CI/CD for the `main` branch, the library is published to [npm](https://www.npmjs.com/). If it is run during CI/CD for any other branch, the library is linted and compiled. It is expected that this command will *only* be used by a CI/CD pipeline, and **never** by a library dev. Running the `release` script on a local codebase is not supported.
+
+
+### Publishing
+
+#### Releasing with `changesets`
+Publishing is handled using the `changesets` library which starts the process by requiring a manual entry into a running version log. Once you have defined a set of changes as a version change, the automated processes can prepare the library to be published on to `npm`. When the automation has prepared the release, it will create a pull request from a new branch containing the release package. The publishing developer will be required to merge that branch into main, using the pull request, in order to publish a new version.
+
+The step-by-step process is outline below for both Github and Gitlab:
+
+##### Github Steps
+1. **Run `changeset` command**: `npm run changeset` | `bun run changeset` | `pnpm changesets` | `yarn changesets` | `npx @changesets/cli`
+1. **Log version info**: Add a message that describes the changes in this version
+1. **Check in**: Push changes to repo
+1. **Merge**: Merge branch into `main`
+1.  **Merge Automation Branch**: Await repo automation's creation of a new pull request from a newly created branch. Accept the pull request, merging the branch into main.
+
+After automation completes, the new version will be published to `NPM`.
+
+##### Gitlab Steps
+1. **Run `changeset` command**: `npm run changeset` | `bun run changeset` | `pnpm changesets` | `yarn changesets` | `npx @changesets/cli`
+1. **Log version info**: Add a message that describes the changes in this version
+1. **Check in**: Push changes to repo
+1. **Merge**: Merge branch into `main`
+1.  **Merge Automation Branch**: Await repo automation's creation of a new merge request from a newly created branch. Merge the merge request into main.
+
+After automation completes, the new version will be published to `NPM`.
+
+### Dependencies
+
+#### Library Dependencies
+
+
+#### Development Dependencies
+
+##### [`typescript`](https://www.typescriptlang.org/)
+Typescript provides type checking at dev time which adds compile-time safety to the codebase for a wide range of issues. For more information on Typescript, visit its [website](https://www.typescriptlang.org/).
+
+##### [`@changesets/cli`](https://github.com/changesets/changesets)
+The `changesets` library uses a strict process to handle versioning and publishing which makes the update and deployment of any library to NPM a structured and repeatable series of steps. Versioning is managed by a command-line utility which enforces release notes and semantic versions. Publishing is handled automatically by CI/CD pipelines when code is checked in. The structure allows for automated pipelines to handle linting and testing, while requiring manual directives to invoke action. Versions are not accidentally published, because all code changes that haven't been packaged into a changeset are transparent to the library. As soon as a version is updated (by the library), the CI/CD pipelines will trigger and the library developer will need to merge branches in order to complete the publishing. By enforcing these procedures, `changesets` keeps this library releasing traceable and well-versioned packages.
+
+##### [`vite`](https://vite.dev/)
+Vite is a packaging library that includes a lot of features that make development faster and easier. Packaging and minifying are built in as well as "hot module reload" so that saving any source file will reload the script in the development environment instantly. That is made even better because Vite also dynamically swaps typescript references for javascript references, meaning that a development build can target and debug with the typescript files directly. It is also configurable enough to account for a wide variety of project types.
+
+##### [`vite-plugin-dts`](https://www.npmjs.com/package/vite-plugin-dts)
+This plugin for the `vite` library allows the packaging process to also produce a `.d.ts` file to describe all of the Typescript types exposed by the library. Without that export, other projects that use Typescript would not be able to see the full manifest of exported types.
+
+##### [`@rollup/plugin-terser`](https://www.npmjs.com/package/@rollup/plugin-terser)
+This plugin, which was developed for one of `vite`'s dependencies (`rollup`) but is used in this project by `vite`, provides a type of minification that is not supported by the default library. Using this plugin, the library can be packaged with both unminified and minified code, so that developers who implement the library can debug the code in un-minified files, while still being able to ship a minified version without having to minify it in their own projects.
+
+##### [`@magnit-ce/test-runner`](https://github.com/catapart/magnitce-test-runner)
+This library adds custom HTML elements that allow developers to run simple definitions for automated tests directly in a browser. This element is used in the `dev` directory to provide live automated testing.
+
+##### [`glob`](https://www.npmjs.com/package/glob)
+`glob` is a low-level library that provides full-featured search capabilities to a command-line input. These search features are used by this library to differentiate between test files and source files within the `vite.config` files.
